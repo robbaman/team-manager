@@ -1,0 +1,35 @@
+.example-container {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+mat-drawer {
+  padding: 12px;
+  min-width: 200px;
+
+  div {
+    padding: 10px 0;
+  }
+}
+
+[mat-button] {
+  width: 100%;
+}
+
+mat-drawer-content {
+  div.content {
+    padding: 12px;
+
+  }
+
+  // [mat-icon-button] {
+  //   position: fixed;
+  //   left: 12px;
+  //   top: 12px;
+  // }
+}
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}

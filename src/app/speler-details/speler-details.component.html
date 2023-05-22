@@ -1,0 +1,25 @@
+<mat-form-field *ngIf="speler">
+    <mat-label>Naam</mat-label>
+    <input matInput [(ngModel)]="speler.naam">
+</mat-form-field>
+
+<div class="posities" *ngIf="speler" cdkDropListGroup>
+    <div class="positie-container">
+        <h2>Posities</h2>
+
+        <div cdkDropList [cdkDropListData]="speler.posities" class="positie-list" (cdkDropListDropped)="drop($event)">
+            <div class="positie-box" *ngFor="let item of speler.posities" cdkDrag>
+                {{item}}
+                <mat-icon>drag_handle</mat-icon>
+            </div>
+        </div>
+
+        <h3>Beschikbaar</h3>
+
+        <div cdkDropList [cdkDropListData]="beschikbaar" class="positie-list" (cdkDropListDropped)="drop($event)">
+            <div class="positie-box" *ngFor="let item of beschikbaar" cdkDrag>{{item}}</div>
+        </div>
+
+    </div>
+</div>
+<button mat-raised-button color="primary" (click)="opslaan()">Opslaan</button>

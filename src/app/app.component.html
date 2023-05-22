@@ -1,0 +1,51 @@
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer mode="over">
+        <div>
+            <button mat-icon-button (click)="drawer.close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+            <a routerLink="spelers" (click)="drawer.close()" mat-button>Spelers</a>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+
+            <a routerLink="wedstrijden" (click)="drawer.close()" mat-button>Wedstrijden</a>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+
+            <a routerLink="statistieken" (click)="drawer.close()" mat-button>Statistieken</a>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-drawer>
+    <mat-drawer-content>
+
+        <mat-toolbar color="primary">
+            <button mat-icon-button (click)="drawer.open()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span>
+                {{title$ | async}}
+            </span>
+            <span class="example-spacer"></span>
+            <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+                <mat-icon>favorite</mat-icon>
+            </button>-->
+            <a mat-icon-button routerLink="/">
+                <mat-icon>home</mat-icon>
+            </a> 
+        </mat-toolbar>
+
+
+        <!-- 
+        <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+        </button> -->
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
