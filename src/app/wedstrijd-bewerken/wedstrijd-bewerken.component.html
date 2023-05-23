@@ -1,0 +1,76 @@
+<form (ngSubmit)="opslaan()">
+	<ng-container *ngIf="wedstrijd">
+		<mat-form-field>
+			<mat-label>Tegenstander</mat-label>
+			<input autofocus matInput required name="tegenstander" [(ngModel)]="wedstrijd.tegenstander">
+		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Datum</mat-label>
+			<input name="datum" required (focus)="picker.open()" matInput [matDatepicker]="picker"
+				[(ngModel)]="wedstrijd.datum">
+			<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker touchUi #picker></mat-datepicker>
+		</mat-form-field>
+
+
+
+		<mat-card>
+			<mat-card-header>
+			<mat-card-title>Aanwezige spelers</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+
+				<div class="aanwezigen">
+			<section *ngFor="let speler of wedstrijd.spelers">
+				<mat-checkbox (change)="berekenOpstellingen()" name="speler-{{speler.id}}" class="example-margin" [(ngModel)]="speler.aanwezig">{{speler.naam}}</mat-checkbox>
+			</section>
+		</div>
+			</mat-card-content>
+		</mat-card>
+		
+		<mat-card>
+			<mat-card-header>
+				<mat-card-title>Opstellingen</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+
+		<mat-tab-group>
+			<mat-tab label="Q1">
+				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ1}"></ng-container>
+			</mat-tab>
+			<mat-tab label="Q2">
+				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ2}"></ng-container>
+
+			</mat-tab>
+			<mat-tab label="Q3">
+				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ3}"></ng-container>
+
+			</mat-tab>
+			<mat-tab label="Q4">
+				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ4}"></ng-container>
+
+			</mat-tab>
+		</mat-tab-group>
+	</mat-card-content>
+</mat-card>
+
+		<button mat-raised-button color="primary" type="submit">Opslaan</button>
+	</ng-container>
+</form>
+
+<ng-template #opstelling let-opstelling>
+	<div class="spelerGrid">
+		<div class="positie spits">{{opstelling.spits?.naam}}</div>
+		<div class="positie links">{{opstelling.links?.naam}}</div>
+		<div class="positie midden">{{opstelling.midden?.naam}}</div>
+		<div class="positie rechts">{{opstelling.rechts?.naam}}</div>
+		<div class="positie verdediger">{{opstelling.verdediger?.naam}}</div>
+		<div class="positie keeper">{{opstelling.keeper?.naam}}</div>
+	</div>
+	<mat-divider></mat-divider>
+	<div class="wissels">
+		<h4>Wissels</h4>
+		<p *ngFor="let wissel of opstelling.wissels">{{wissel.naam}}</p>
+	</div>
+</ng-template>

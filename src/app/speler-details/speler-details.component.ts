@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,15 +6,16 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { ALLE_POSITIES, DataService, Speler, SpelerPositie } from '../services/data.service';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
+import { AutofocusDirective } from '../autofocus.directive';
 
 @Component({
   selector: 'tm-speler-details',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, DragDropModule, MatIconModule],
+  imports: [CommonModule, MatFormFieldModule, AutofocusDirective, MatInputModule, FormsModule, MatButtonModule, DragDropModule, MatIconModule],
   templateUrl: './speler-details.component.html',
   styleUrls: ['./speler-details.component.scss']
 })
@@ -25,6 +26,8 @@ export class SpelerDetailsComponent {
   speler: Speler | undefined;
   beschikbaar: SpelerPositie[] = []; 
   toegewezen: SpelerPositie[] = [];
+
+  @ViewChild(NgForm)form?: NgForm;
 
   constructor() {
     this.activatedRoute.params
@@ -57,7 +60,7 @@ export class SpelerDetailsComponent {
   }
 
   opslaan() {
-    if (this.speler === undefined) return;
+    if (this.speler === undefined || !this.form?.valid) return;
     this.dataSvc.spelerOpslaan(this.speler);
     this.router.navigate(['/spelers'])
   }

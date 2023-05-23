@@ -1,25 +1,30 @@
-<mat-form-field *ngIf="speler">
-    <mat-label>Naam</mat-label>
-    <input matInput [(ngModel)]="speler.naam">
-</mat-form-field>
+<form (ngSubmit)="opslaan()" *ngIf="speler">
 
-<div class="posities" *ngIf="speler" cdkDropListGroup>
-    <div class="positie-container">
-        <h2>Posities</h2>
+	<mat-form-field>
+		<mat-label>Naam</mat-label>
+		<input autofocus name="naam" required matInput [(ngModel)]="speler.naam">
+	</mat-form-field>
 
-        <div cdkDropList [cdkDropListData]="speler.posities" class="positie-list" (cdkDropListDropped)="drop($event)">
-            <div class="positie-box" *ngFor="let item of speler.posities" cdkDrag>
-                {{item}}
-                <mat-icon>drag_handle</mat-icon>
-            </div>
-        </div>
+	<div class="posities" *ngIf="speler" cdkDropListGroup>
+		<div class="positie-container">
+			<h2>Posities</h2>
 
-        <h3>Beschikbaar</h3>
+			<div cdkDropList [cdkDropListData]="speler.posities" class="positie-list"
+				(cdkDropListDropped)="drop($event)">
+				<div class="positie-box" *ngFor="let item of speler.posities" cdkDrag>
+					{{item}}
+					<mat-icon>drag_handle</mat-icon>
+				</div>
+			</div>
 
-        <div cdkDropList [cdkDropListData]="beschikbaar" class="positie-list" (cdkDropListDropped)="drop($event)">
-            <div class="positie-box" *ngFor="let item of beschikbaar" cdkDrag>{{item}}</div>
-        </div>
+			<h3>Beschikbaar</h3>
 
-    </div>
-</div>
-<button mat-raised-button color="primary" (click)="opslaan()">Opslaan</button>
+			<div cdkDropList [cdkDropListData]="beschikbaar" class="positie-list" (cdkDropListDropped)="drop($event)">
+				<div class="positie-box" *ngFor="let item of beschikbaar" cdkDrag>{{item}}</div>
+			</div>
+
+		</div>
+	</div>
+
+	<button mat-raised-button color="primary" type="submit">Opslaan</button>
+</form>

@@ -5,6 +5,7 @@ import { WedstrijdToevoegenComponent } from './wedstrijd-toevoegen/wedstrijd-toe
 import { HomeComponent } from './home/home.component';
 import { SpelerDetailsComponent } from './speler-details/speler-details.component';
 import { StatistiekenComponent } from './statistieken/statistieken.component';
+import { WedstrijdBewerkenComponent } from './wedstrijd-bewerken/wedstrijd-bewerken.component';
 
 export const routes: Routes = [
     {
@@ -33,8 +34,8 @@ export const routes: Routes = [
         title: 'Statistieken'
     },
     {
-        path: 'wedstrijd/:id',
-        component: WedstrijdToevoegenComponent,
+        path: 'wedstrijd/:id/bewerken',
+        component: WedstrijdBewerkenComponent,
         title: 'Wedstrijd details'
     },
     {

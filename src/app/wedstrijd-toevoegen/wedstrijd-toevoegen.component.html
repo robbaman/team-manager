@@ -1,1 +1,15 @@
-<p>wedstrijd-toevoegen works!</p>
+<form (ngSubmit)="opslaan()">
+	<mat-form-field>
+		<mat-label>Tegenstander</mat-label>
+		<input autofocus matInput required name="tegenstander" [(ngModel)]="wedstrijd!.tegenstander">
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Datum</mat-label>
+		<input name="datum" required (focus)="picker.open()" matInput [matDatepicker]="picker" [(ngModel)]="wedstrijd!.datum">
+		<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+		<mat-datepicker touchUi #picker></mat-datepicker>
+	</mat-form-field>
+
+	<button mat-raised-button color="primary" type="submit">Opslaan</button>
+</form>

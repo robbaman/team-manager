@@ -1,0 +1,63 @@
+mat-form-field {
+	width: 100%;
+}
+
+mat-card {
+	margin-bottom: 15px;
+}
+
+.aanwezigen {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin-bottom: 20px;
+}
+
+.spelerGrid {
+	margin: 20px 0;
+	display: grid;
+	column-gap: 10px;
+	row-gap: 20px;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-areas:
+		". . . . spits spits spits spits . . . ."
+		"links links links links midden midden midden midden rechts rechts rechts rechts"
+		". . . . verdediger verdediger verdediger verdediger . . . ."
+		". . . . keeper keeper keeper keeper  . . . ."
+	;
+}
+
+.wissels {
+	h4 {
+		margin-top: 20px;
+	}
+}
+
+.spits {
+	grid-area: spits;
+}
+
+.links {
+	grid-area: links;
+}
+
+.midden {
+	grid-area: midden;
+}
+
+.rechts {
+	grid-area: rechts;
+}
+
+.verdediger {
+	grid-area: verdediger;
+}
+
+.keeper {
+	grid-area: keeper;
+}
+
+.positie {
+	justify-self: stretch;
+	align-self: center;
+	text-align: center;
+}

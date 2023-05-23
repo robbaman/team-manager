@@ -1,6 +1,5 @@
-.example-container {
+.container {
   min-height: 100vh;
-  min-width: 100vw;
 }
 
 mat-drawer {
@@ -9,6 +8,10 @@ mat-drawer {
 
   div {
     padding: 10px 0;
+
+	&.icon {
+		padding-top: 0;
+	}
   }
 }
 
