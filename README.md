@@ -11,6 +11,9 @@
 
 - Wedstrijdhistorie
   - Speeltijd per speler bijhouden over verschillende wedstrijden heen
+    - Aantal gespeelde minuten als speler
+    - Aantal beschikbare minuten 
+    - Aantal gespeelde minuten als keeper
   - Goals/assists?
   - Samenvatting/opmerkingen
 - Opstellingen willekeurig genereren
