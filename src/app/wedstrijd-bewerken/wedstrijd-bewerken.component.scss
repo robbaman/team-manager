@@ -6,6 +6,11 @@ mat-card {
 	margin-bottom: 15px;
 }
 
+footer {
+	&.buttons {
+		display: flex;
+	}
+}
 
 mat-checkbox {
 	user-select: none;
@@ -35,6 +40,18 @@ mat-checkbox {
 		". . . . verdediger verdediger verdediger verdediger . . . ."
 		". . . . keeper keeper keeper keeper  . . . ."
 	;
+	.positie {
+		justify-self: stretch;
+		align-self: center;
+		text-align: center;
+	}
+
+	&.editable {
+		.positie {
+			cursor: pointer;
+		}
+	
+	}
 }
 
 .wissels {
@@ -47,7 +64,7 @@ mat-checkbox {
 	grid-area: spits;
 }
 
-.links {
+.linkshalf {
 	grid-area: links;
 }
 
@@ -55,7 +72,7 @@ mat-checkbox {
 	grid-area: midden;
 }
 
-.rechts {
+.rechtshalf {
 	grid-area: rechts;
 }
 
@@ -65,11 +82,4 @@ mat-checkbox {
 
 .keeper {
 	grid-area: keeper;
-}
-
-.positie {
-	cursor: pointer;
-	justify-self: stretch;
-	align-self: center;
-	text-align: center;
 }

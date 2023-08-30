@@ -34,8 +34,15 @@ export class WedstrijdToevoegenComponent {
 			switchMap(params => {
 			  if (params['id']) {
 				return this.dataSvc.getWedstrijd(parseInt(params['id']));
-			  } else
-				return of({id: -1, tegenstander: ''} as Wedstrijd);
+			  } else {
+				  const nieuweWedstrijd: Wedstrijd = {
+					id: -1, 
+					tegenstander: '', 
+					status: 'Concept',
+					spelers: []
+				  };
+				  return of(nieuweWedstrijd);
+				}			  	
 			})
 		  ).subscribe(wedstrijd => {
 			this.wedstrijd = wedstrijd;

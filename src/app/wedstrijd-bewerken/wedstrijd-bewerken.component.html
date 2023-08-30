@@ -1,76 +1,104 @@
-<form (ngSubmit)="opslaan()">
-	<ng-container *ngIf="wedstrijd">
+<form (ngSubmit)="opslaanClicked$.next()">
+	<ng-container *ngIf="wedstrijd$ | async as wedstrijd">
 		<mat-form-field>
 			<mat-label>Tegenstander</mat-label>
-			<input autofocus matInput required name="tegenstander" [(ngModel)]="wedstrijd.tegenstander">
+			<input autofocus matInput required name="tegenstander" [(ngModel)]="wedstrijd.tegenstander" [disabled]="wedstrijd.status === 'Definitief'">
 		</mat-form-field>
 
 		<mat-form-field>
 			<mat-label>Datum</mat-label>
 			<input name="datum" required (focus)="picker.open()" matInput [matDatepicker]="picker"
-				[(ngModel)]="wedstrijd.datum">
+				[(ngModel)]="wedstrijd.datum"
+				[disabled]="wedstrijd.status === 'Definitief'">
 			<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 			<mat-datepicker touchUi #picker></mat-datepicker>
 		</mat-form-field>
 
-
-
 		<mat-card>
 			<mat-card-header>
-			<mat-card-title>Aanwezige spelers</mat-card-title>
+				<mat-card-title>Aanwezige spelers</mat-card-title>
 			</mat-card-header>
 			<mat-card-content>
 
 				<div class="aanwezigen">
-			<section *ngFor="let speler of wedstrijd.spelers">
-				<mat-checkbox (change)="berekenOpstellingen()" name="speler-{{speler.id}}" class="example-margin" [(ngModel)]="speler.aanwezig">{{speler.naam}}</mat-checkbox>
-			</section>
-		</div>
+					<section *ngFor="let speler of wedstrijd.spelers">
+						<mat-checkbox [disabled]="wedstrijd.status === 'Definitief'" name="speler-{{speler.id}}" class="example-margin"
+							[(ngModel)]="speler.aanwezig">{{speler.naam}}</mat-checkbox>
+					</section>
+				</div>
 			</mat-card-content>
 		</mat-card>
-		
-		<mat-card>
+
+		<mat-card *ngIf="opstellingBerekend$ | async">
 			<mat-card-header>
 				<mat-card-title>Opstellingen</mat-card-title>
 			</mat-card-header>
 			<mat-card-content>
+				<mat-tab-group>
+					<mat-tab label="Q1">
+						<ng-container [ngTemplateOutlet]="opstelling"
+							[ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ1}"></ng-container>
+					</mat-tab>
+					<mat-tab label="Q2">
+						<ng-container [ngTemplateOutlet]="opstelling"
+							[ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ2}"></ng-container>
 
-		<mat-tab-group>
-			<mat-tab label="Q1">
-				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ1}"></ng-container>
-			</mat-tab>
-			<mat-tab label="Q2">
-				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ2}"></ng-container>
+					</mat-tab>
+					<mat-tab label="Q3">
+						<ng-container [ngTemplateOutlet]="opstelling"
+							[ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ3}"></ng-container>
 
-			</mat-tab>
-			<mat-tab label="Q3">
-				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ3}"></ng-container>
+					</mat-tab>
+					<mat-tab label="Q4">
+						<ng-container [ngTemplateOutlet]="opstelling"
+							[ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ4}"></ng-container>
 
-			</mat-tab>
-			<mat-tab label="Q4">
-				<ng-container [ngTemplateOutlet]="opstelling" [ngTemplateOutletContext]="{$implicit: wedstrijd.opstellingQ4}"></ng-container>
+					</mat-tab>
+				</mat-tab-group>
+			</mat-card-content>
+		</mat-card>
 
-			</mat-tab>
-		</mat-tab-group>
-	</mat-card-content>
-</mat-card>
+		<footer class="buttons">
+			<button mat-raised-button color="accent" *ngIf="!wedstrijd.opstellingBerekend"
+				(click)="berekenOpstellingenClicked$.next()" type="button"
+				[disabled]="wedstrijd.status === 'Definitief'">Bereken opstelling</button>
+			<button mat-raised-button color="accent" *ngIf="wedstrijd.opstellingBerekend"
+				(click)="berekenOpstellingenClicked$.next()" type="button"
+				[disabled]="wedstrijd.status === 'Definitief'">Opstelling herberekenen</button>
+			<button mat-raised-button color="primary" type="submit"
+				[disabled]="wedstrijd.status === 'Definitief'">Opslaan</button>
+			<button mat-raised-button color="warn"
+				[disabled]="!wedstrijd.opstellingBerekend || wedstrijd.status === 'Definitief'" type="button"
+				(click)="afrondenClicked$.next()">Afronden</button>
+		</footer>
 
-		<button mat-raised-button color="primary" type="submit">Opslaan</button>
+		<ng-template #opstelling let-opstelling>
+			<div class="spelerGrid" [class.editable]="wedstrijd.status !== 'Definitief'">
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.spits, positie: 'spits' }" class="positie spits">{{opstelling.spits?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.linkshalf, positie: 'linkshalf' }" class="positie linkshalf">{{opstelling.linkshalf?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.midden, positie: 'midden' }" class="positie midden">{{opstelling.midden?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.rechtshalf, positie: 'rechtshalf' }" class="positie rechtshalf">{{opstelling.rechtshalf?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.verdediger, positie: 'verdediger' }" class="positie verdediger">{{opstelling.verdediger?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.keeper, positie: 'keeper' }" class="positie keeper">{{opstelling.keeper?.naam}}</div>
+			</div>
+			<mat-divider></mat-divider>
+			<div class="wissels">
+				<h4>Wissels</h4>
+				<p *ngFor="let wissel of opstelling.wissels">{{wissel.naam}}</p>
+			</div>
+		</ng-template>
 	</ng-container>
 </form>
 
-<ng-template #opstelling let-opstelling>
-	<div class="spelerGrid">
-		<div class="positie spits">{{opstelling.spits?.naam}}</div>
-		<div class="positie links">{{opstelling.links?.naam}}</div>
-		<div class="positie midden">{{opstelling.midden?.naam}}</div>
-		<div class="positie rechts">{{opstelling.rechts?.naam}}</div>
-		<div class="positie verdediger">{{opstelling.verdediger?.naam}}</div>
-		<div class="positie keeper">{{opstelling.keeper?.naam}}</div>
-	</div>
-	<mat-divider></mat-divider>
-	<div class="wissels">
-		<h4>Wissels</h4>
-		<p *ngFor="let wissel of opstelling.wissels">{{wissel.naam}}</p>
-	</div>
-</ng-template>
+
+
+
+<mat-menu #menu="matMenu">
+	<ng-template matMenuContent let-huidigeSpeler="speler" let-opstelling="opstelling" let-positie="positie">
+		<ng-container *ngFor="let speler of actieveSpelers$ | async">
+			<button mat-menu-item *ngIf="huidigeSpeler.id !== speler.id" (click)="wisselSpelers(opstelling, positie, huidigeSpeler, speler)">
+				<span>Wissel met {{speler.naam}}</span>
+			</button>
+		</ng-container>
+	</ng-template>
+</mat-menu>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,5 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent {
+
+    @Input() headerText: string = '';
+    @Input() bodyText: string = '';
 
 }

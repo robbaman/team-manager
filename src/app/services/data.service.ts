@@ -15,7 +15,7 @@ export class DataService {
     {id: 6,  actief: true, naam: 'Shivan', posities: ['Spits', 'Midden']},
     {id: 7,  actief: true, naam: 'Daimen', posities: ['Verdediger']},
     {id: 8,  actief: true, naam: 'Semmy', posities: ['Keeper','Rechtshalf','Linkshalf', 'Midden']},
-    {id: 9,  actief: true, naam: 'Noufal', posities: ['Spits', 'Midden', 'Linkshalf', 'Rechtshalf']},
+    {id: 9,  actief: true, naam: 'Mason', posities: ['Spits', 'Midden', 'Linkshalf', 'Rechtshalf']},
     {id: 10, actief: true, naam: 'Jayson', posities: ['Linkshalf','Rechtshalf', 'Midden', 'Spits']}
   ]);
 
@@ -24,38 +24,39 @@ export class DataService {
 	id: 1,
 	tegenstander: 'Waterwijk',
 	spelers: [],
+	status: 'Concept',
 	opstellingQ1: {
 		spits: null,
-		links: null,
+		linkshalf: null,
 		midden: null,
-		rechts: null,
+		rechtshalf: null,
 		verdediger: null,
 		keeper: null,
 		wissels: []
 	},
 	opstellingQ2: {
 		spits: null,
-		links: null,
+		linkshalf: null,
 		midden: null,
-		rechts: null,
+		rechtshalf: null,
 		verdediger: null,
 		keeper: null,
 		wissels: []
 	},
 	opstellingQ3: {
 		spits: null,
-		links: null,
+		linkshalf: null,
 		midden: null,
-		rechts: null,
+		rechtshalf: null,
 		verdediger: null,
 		keeper: null,
 		wissels: []
 	},
 	opstellingQ4: {
 		spits: null,
-		links: null,
+		linkshalf: null,
 		midden: null,
-		rechts: null,
+		rechtshalf: null,
 		verdediger: null,
 		keeper: null,
 		wissels: []
@@ -80,7 +81,7 @@ export class DataService {
     return this.wedstrijden$.pipe(map(i => ({...i.filter(_ => _.id === id)[0]})));
   }
 
-  wedstrijdOpslaan(wedstrijd: Wedstrijd) {
+  wedstrijdOpslaan(wedstrijd: Wedstrijd) : Observable<any> {
     var copy = [...this.wedstrijden$.value];
     var index = copy.findIndex(i => i.id === wedstrijd.id);
 	if (wedstrijd.id < 0 || index < 0) {
@@ -91,6 +92,13 @@ export class DataService {
 		copy[index] = wedstrijd;
 	}
     this.wedstrijden$.next(copy);
+	return of(1);
+  }
+
+  wedstrijdDefinitiefMaken(wedstrijd: Wedstrijd): Observable<any> {
+	wedstrijd.status = 'Definitief';
+	// TODO: Bereken nieuwe spelerstatistieken!
+	return this.wedstrijdOpslaan(wedstrijd);
   }
 
   getSpelers(): Observable<Speler[]> {
@@ -117,9 +125,11 @@ export class DataService {
 }
 
 
-export type SpelerPositie = 'Keeper' | 'Verdediger' | 'Linkshalf' | 'Midden' | 'Rechtshalf' | 'Spits'
-
+export type SpelerPositie = 'Keeper' | 'Verdediger' | 'Linkshalf' | 'Midden' | 'Rechtshalf' | 'Spits';
+export type WedstrijdStatus = 'Definitief' | 'Concept';
 export const ALLE_POSITIES: SpelerPositie[] = ['Keeper', 'Verdediger', 'Linkshalf', 'Midden', 'Rechtshalf', 'Spits']
+export type WedstrijdOpstellingPositie = keyof Pick<WedstrijdOpstelling, 'keeper' | 'verdediger' | 'linkshalf' | 'midden' | 'rechtshalf' | 'spits'>;
+export const ALLE_POSITIE_PROPERTIES: WedstrijdOpstellingPositie[] = ['keeper', 'verdediger', 'linkshalf', 'midden', 'rechtshalf', 'spits']
 
 export interface Speler {
   naam: string;
@@ -132,12 +142,14 @@ export interface Speler {
 export interface Wedstrijd {
 	id: number;
 	tegenstander: string;
+	status: WedstrijdStatus;
+	opstellingBerekend?: boolean;
 	spelers: WedstrijdSpeler[];
-	opstellingQ1: WedstrijdOpstelling;
-	opstellingQ2: WedstrijdOpstelling;
-	opstellingQ3: WedstrijdOpstelling;
-	opstellingQ4: WedstrijdOpstelling;
-	datum: Date | string | undefined;
+	opstellingQ1?: WedstrijdOpstelling;
+	opstellingQ2?: WedstrijdOpstelling;
+	opstellingQ3?: WedstrijdOpstelling;
+	opstellingQ4?: WedstrijdOpstelling;
+	datum?: Date | string;
 }
 
 export interface WedstrijdSpeler {
@@ -148,9 +160,9 @@ export interface WedstrijdSpeler {
 
 export interface WedstrijdOpstelling {
 	spits: WedstrijdSpeler | null;
-	links: WedstrijdSpeler | null;
+	linkshalf: WedstrijdSpeler | null;
 	midden: WedstrijdSpeler | null;
-	rechts: WedstrijdSpeler | null;
+	rechtshalf: WedstrijdSpeler | null;
 	verdediger: WedstrijdSpeler | null;
 	keeper: WedstrijdSpeler | null;
 	wissels: WedstrijdSpeler[];
