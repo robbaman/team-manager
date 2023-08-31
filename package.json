@@ -5,7 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "swa:start": "swa start app",
+    "swa:login": "swa deploy app",
+    "swa:deploy": "swa login"	
   },
   "private": true,
   "dependencies": {
