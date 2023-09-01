@@ -2,13 +2,31 @@ mat-form-field {
 	width: 100%;
 }
 
+
+
 mat-card {
 	margin-bottom: 15px;
 }
 
-footer {
-	&.buttons {
-		display: flex;
+@media screen and (max-width: 449px) {
+	footer {
+		&.buttons {
+
+			button {
+				width: 100%;
+				margin-bottom: 15px;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 450px) {
+	footer {
+		&.buttons {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+		}
 	}
 }
 
@@ -16,11 +34,6 @@ mat-checkbox {
 	user-select: none;
 }
 
-.buttons {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-}
 
 .aanwezigen {
 	display: grid;
