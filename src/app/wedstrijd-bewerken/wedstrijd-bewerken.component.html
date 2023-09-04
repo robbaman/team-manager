@@ -1,5 +1,5 @@
-<form (ngSubmit)="opslaanClicked$.next()">
-	<ng-container *ngIf="wedstrijd$ | async as wedstrijd">
+<form (ngSubmit)="opslaanClicked()">
+	<ng-container *ngIf="wedstrijd">
 		<mat-form-field>
 			<mat-label>Tegenstander</mat-label>
 			<input autofocus matInput required name="tegenstander" [(ngModel)]="wedstrijd.tegenstander" [disabled]="wedstrijd.status === 'Definitief'">
@@ -29,7 +29,7 @@
 			</mat-card-content>
 		</mat-card>
 
-		<mat-card *ngIf="opstellingBerekend$ | async">
+		<mat-card *ngIf="wedstrijd.opstellingBerekend">
 			<mat-card-header>
 				<mat-card-title>Opstellingen</mat-card-title>
 			</mat-card-header>
@@ -60,31 +60,31 @@
 
 		<footer class="buttons">
 			<button mat-raised-button color="accent" *ngIf="!wedstrijd.opstellingBerekend"
-				(click)="berekenOpstellingenClicked$.next()" type="button"
+				(click)="berekenOpstellingenClicked()" type="button"
 				[disabled]="wedstrijd.status === 'Definitief'">Bereken opstelling</button>
 			<button mat-raised-button color="accent" *ngIf="wedstrijd.opstellingBerekend"
-				(click)="berekenOpstellingenClicked$.next()" type="button"
+				(click)="berekenOpstellingenClicked()" type="button"
 				[disabled]="wedstrijd.status === 'Definitief'">Opstelling herberekenen</button>
 			<button mat-raised-button color="primary" type="submit"
 				[disabled]="wedstrijd.status === 'Definitief'">Opslaan</button>
 			<button mat-raised-button color="warn"
 				[disabled]="!wedstrijd.opstellingBerekend || wedstrijd.status === 'Definitief'" type="button"
-				(click)="afrondenClicked$.next()">Afronden</button>
+				(click)="afrondenClicked()">Afronden</button>
 		</footer>
 
 		<ng-template #opstelling let-opstelling>
 			<div class="spelerGrid" [class.editable]="wedstrijd.status !== 'Definitief'">
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.spits, positie: 'spits' }" class="positie spits">{{opstelling.spits?.naam}}</div>
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.linkshalf, positie: 'linkshalf' }" class="positie linkshalf">{{opstelling.linkshalf?.naam}}</div>
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.midden, positie: 'midden' }" class="positie midden">{{opstelling.midden?.naam}}</div>
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.rechtshalf, positie: 'rechtshalf' }" class="positie rechtshalf">{{opstelling.rechtshalf?.naam}}</div>
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.verdediger, positie: 'verdediger' }" class="positie verdediger">{{opstelling.verdediger?.naam}}</div>
-				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.keeper, positie: 'keeper' }" class="positie keeper">{{opstelling.keeper?.naam}}</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.spits, positie: 'spits' }" class="positie spits">{{opstelling.spits?.naam}} ({{opstelling.spits?.aantalSpeelbeurtenDezeWedstrijd}})</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.linkshalf, positie: 'linkshalf' }" class="positie linkshalf">{{opstelling.linkshalf?.naam}} ({{opstelling.linkshalf?.aantalSpeelbeurtenDezeWedstrijd}})</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.midden, positie: 'midden' }" class="positie midden">{{opstelling.midden?.naam}} ({{opstelling.midden?.aantalSpeelbeurtenDezeWedstrijd}})</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.rechtshalf, positie: 'rechtshalf' }" class="positie rechtshalf">{{opstelling.rechtshalf?.naam}} ({{opstelling.rechtshalf?.aantalSpeelbeurtenDezeWedstrijd}})</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.verdediger, positie: 'verdediger' }" class="positie verdediger">{{opstelling.verdediger?.naam}} ({{opstelling.verdediger?.aantalSpeelbeurtenDezeWedstrijd}})</div>
+				<div [matMenuTriggerFor]="wedstrijd.status === 'Definitief' ? null : menu" [matMenuTriggerData]="{ opstelling: opstelling, speler: opstelling.keeper, positie: 'keeper' }" class="positie keeper">{{opstelling.keeper?.naam}} ({{opstelling.keeper?.aantalSpeelbeurtenDezeWedstrijd}})</div>
 			</div>
 			<mat-divider></mat-divider>
 			<div class="wissels">
 				<h4>Wissels</h4>
-				<p *ngFor="let wissel of opstelling.wissels">{{wissel.naam}}</p>
+				<p *ngFor="let wissel of opstelling.wissels">{{wissel.naam}} ({{wissel.aantalSpeelbeurtenDezeWedstrijd}})</p>
 			</div>
 		</ng-template>
 	</ng-container>
@@ -95,7 +95,7 @@
 
 <mat-menu #menu="matMenu">
 	<ng-template matMenuContent let-huidigeSpeler="speler" let-opstelling="opstelling" let-positie="positie">
-		<ng-container *ngFor="let speler of actieveSpelers$ | async">
+		<ng-container *ngFor="let speler of actieveSpelers">
 			<button mat-menu-item *ngIf="huidigeSpeler.id !== speler.id" (click)="wisselSpelers(opstelling, positie, huidigeSpeler, speler)">
 				<span>Wissel met {{speler.naam}}</span>
 			</button>

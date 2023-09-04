@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, Wedstrijd } from '../services/data.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm, NonNullableFormBuilder } from '@angular/forms';
 import { of, switchMap } from 'rxjs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -39,7 +39,9 @@ export class WedstrijdToevoegenComponent {
 					id: -1, 
 					tegenstander: '', 
 					status: 'Concept',
-					spelers: []
+					spelers: [],
+					keeperEersteHelft: null,
+					keeperTweedeHelft: null
 				  };
 				  return of(nieuweWedstrijd);
 				}			  	

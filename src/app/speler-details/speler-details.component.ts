@@ -37,7 +37,7 @@ export class SpelerDetailsComponent {
           if (params['id']) {
             return this.dataSvc.getSpeler(parseInt(params['id']));
           } else
-            return of({id: -1, actief: true, posities: [], naam: ''} as Speler);
+            return of({id: -1, actief: true, posities: [], naam: '', aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0} as Speler);
         })
       ).subscribe(speler => {
         this.speler = speler;
@@ -61,7 +61,7 @@ export class SpelerDetailsComponent {
 
   opslaan() {
     if (this.speler === undefined || !this.form?.valid) return;
-    this.dataSvc.spelerOpslaan(this.speler);
+    this.dataSvc.spelerOpslaan(this.speler).pipe(takeUntilDestroyed()).subscribe();
     this.router.navigate(['/spelers'])
   }
 }
