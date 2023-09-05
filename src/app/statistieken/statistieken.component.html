@@ -1,3 +1,54 @@
-<p>Speelminuten per speler</p>
-<p>Aantal spelers per positie</p>
-<p>Doelpunten?</p>
+<mat-tab-group [disablePagination]="true" [mat-stretch-tabs]="true">
+    <mat-tab label="Speler-statistieken">
+        <table mat-table [dataSource]="spelers$" class="mat-elevation-z2">
+            <ng-container matColumnDef="naam">
+                <th mat-header-cell *matHeaderCellDef> Naam </th>
+                <td mat-cell *matCellDef="let speler"> {{speler.naam}} </td>
+            </ng-container>
+            <ng-container matColumnDef="aantalWedstrijdenBijgewoond">
+                <th mat-header-cell *matHeaderCellDef> Wedstrijden </th>
+                <td mat-cell *matCellDef="let speler"> {{speler.aantalWedstrijdenBijgewoond}} </td>
+            </ng-container>
+            <ng-container matColumnDef="aantalKeeperbeurtenTotNu">
+                <th mat-header-cell *matHeaderCellDef> Keepbeurten </th>
+                <td mat-cell *matCellDef="let speler"> {{speler.aantalKeeperbeurtenTotNu}} </td>
+            </ng-container>
+            <ng-container matColumnDef="aantalSpeelbeurtenTotNu">
+                <th mat-header-cell *matHeaderCellDef> Veldbeurten </th>
+                <td mat-cell *matCellDef="let speler"> {{speler.aantalSpeelbeurtenTotNu}}
+                    <span *ngIf="speler.aantalWedstrijdenBijgewoond > 0">({{speler.aantalSpeelbeurtenTotNu / (speler.aantalWedstrijdenBijgewoond * 4) | percent:'1.0' }})</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="aantalWisselbeurtenTotNu">
+                <th mat-header-cell *matHeaderCellDef> Wisselbeurten </th>
+                <td mat-cell *matCellDef="let speler"> {{speler.aantalWisselbeurtenTotNu}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['naam', 'aantalWedstrijdenBijgewoond', 'aantalKeeperbeurtenTotNu', 'aantalSpeelbeurtenTotNu', 'aantalWisselbeurtenTotNu']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['naam', 'aantalWedstrijdenBijgewoond', 'aantalKeeperbeurtenTotNu', 'aantalSpeelbeurtenTotNu', 'aantalWisselbeurtenTotNu'];"></tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Positie-statistieken">
+        <table mat-table [dataSource]="posities$" class="mat-elevation-z2">
+            <ng-container matColumnDef="naam">
+                <th mat-header-cell *matHeaderCellDef> Positie </th>
+                <td mat-cell *matCellDef="let positie"> {{positie.positie}} </td>
+            </ng-container>
+            <ng-container matColumnDef="aantal">
+                <th mat-header-cell *matHeaderCellDef> Aantal </th>
+                <td mat-cell *matCellDef="let positie"> {{positie.spelers?.length ?? 0}} </td>
+            </ng-container>
+            <ng-container matColumnDef="spelers">
+                <th mat-header-cell *matHeaderCellDef> Spelers </th>
+                <td mat-cell *matCellDef="let positie"> 
+                  <span *ngIf="positie.spelers && positie.spelers.length">
+                      <span *ngFor="let s of positie.spelers; let last=last">
+                        <span [class.highlight]="hover === s" (mouseenter)="hover = s" (mouseout)="hover = ''">{{s}}</span><span *ngIf="!last">, </span>
+                      </span>
+                  </span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['naam', 'aantal', 'spelers']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['naam', 'aantal', 'spelers'];"></tr>
+        </table>        
+    </mat-tab>
+</mat-tab-group>

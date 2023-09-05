@@ -5,7 +5,13 @@
       </ng-container>
       <ng-container matColumnDef="positie">
         <th mat-header-cell *matHeaderCellDef> Positie </th>
-        <td mat-cell *matCellDef="let speler"> {{speler.posities && speler.posities.length ? speler.posities[0]: ''}} </td>
+        <td mat-cell *matCellDef="let speler"> 
+          <span *ngIf="speler.posities && speler.posities.length">
+              <span *ngFor="let s of speler.posities; let last=last">
+                <span [class.highlight]="hover === s" (mouseenter)="hover = s" (mouseout)="hover = ''">{{s}}</span><span *ngIf="!last">, </span>
+              </span>
+          </span>
+        </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="['naam', 'positie']"></tr>
       <tr mat-row *matRowDef="let row; columns: ['naam', 'positie'];" [routerLink]="['/speler', row.id]"></tr>

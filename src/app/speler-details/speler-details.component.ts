@@ -37,7 +37,7 @@ export class SpelerDetailsComponent {
           if (params['id']) {
             return this.dataSvc.getSpeler(parseInt(params['id']));
           } else
-            return of({id: -1, actief: true, posities: [], naam: '', aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0} as Speler);
+            return of({id: -1, actief: true, posities: [], naam: '', aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0} as Speler);
         })
       ).subscribe(speler => {
         this.speler = speler;

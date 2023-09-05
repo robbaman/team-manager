@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class SpelersLijstComponent {
   data = inject(DataService);
-
+  hover = '';
   spelers$: Observable<Speler[]>;
 
   constructor() {

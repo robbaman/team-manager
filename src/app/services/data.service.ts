@@ -7,16 +7,16 @@ import {BehaviorSubject, Observable, filter, forkJoin, map, of, switchMap, take,
 })
 export class DataService {
   private spelers$ = new BehaviorSubject<Speler[]>([
-    {id: 1,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Mika', posities: ['Spits', 'Midden', 'Rechtshalf', 'Linkshalf']},
-    {id: 2,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Cecilio', posities: ['Keeper', 'Midden']},
-    {id: 3,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Luca', posities: ['Verdediger', 'Keeper']},
-    {id: 4,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Aylash', posities: ['Rechtshalf', 'Linkshalf', 'Spits']},
-    {id: 5,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Emmanuel', posities: ['Rechtshalf','Linkshalf']},
-    {id: 6,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Shivan', posities: ['Spits', 'Midden']},
-    {id: 7,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Daimen', posities: ['Verdediger']},
-    {id: 8,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Semmy', posities: ['Keeper','Rechtshalf','Linkshalf', 'Midden']},
-    {id: 9,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Mason', posities: ['Spits', 'Midden', 'Linkshalf', 'Rechtshalf']},
-    {id: 10, actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWisselbeurtenTotNu: 0, naam: 'Jayson', posities: ['Linkshalf','Rechtshalf', 'Midden', 'Spits']}
+    {id: 1,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Mika', posities: ['Spits', 'Midden', 'Rechtshalf', 'Linkshalf']},
+    {id: 2,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Cecilio', posities: ['Keeper', 'Midden']},
+    {id: 3,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Luca', posities: ['Verdediger', 'Keeper']},
+    {id: 4,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Aylash', posities: ['Rechtshalf', 'Linkshalf', 'Spits']},
+    {id: 5,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Emmanuel', posities: ['Rechtshalf','Linkshalf']},
+    {id: 6,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Shivan', posities: ['Spits', 'Midden']},
+    {id: 7,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Daimen', posities: ['Verdediger']},
+    {id: 8,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Semmy', posities: ['Keeper','Rechtshalf','Linkshalf', 'Midden']},
+    {id: 9,  actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Mason', posities: ['Spits', 'Midden', 'Linkshalf', 'Rechtshalf']},
+    {id: 10, actief: true, aantalKeeperbeurtenTotNu: 0, aantalSpeelbeurtenTotNu: 0, aantalWedstrijdenBijgewoond: 0, aantalWisselbeurtenTotNu: 0, naam: 'Jayson', posities: ['Linkshalf','Rechtshalf', 'Midden', 'Spits']}
   ]);
 
   private wedstrijden$ = new BehaviorSubject<Wedstrijd[]>([{
@@ -137,6 +137,14 @@ export class DataService {
 		.pipe(
 			// Haal de laatste stand van de spelers op
 			switchMap(spelers => {
+				var aanwezigeSpelers = wedstrijd.spelers.filter(i => i.aanwezig);
+				for (const aanwezigeSpeler of aanwezigeSpelers) {
+					var s = spelers.find(i => i.id === aanwezigeSpeler.id);
+					if (s) {
+						s.aantalWedstrijdenBijgewoond++;
+					}
+				}
+
 				// Werk aantallen beurten bij
 				spelerStatistiekBijwerkenVoorOpstelling(wedstrijd.opstellingQ1, spelers);
 				spelerStatistiekBijwerkenVoorOpstelling(wedstrijd.opstellingQ2, spelers);
@@ -188,6 +196,7 @@ export interface Speler {
   naam: string;
   id: number;
   actief: boolean;
+  aantalWedstrijdenBijgewoond: number;
   aantalWisselbeurtenTotNu: number;
   aantalKeeperbeurtenTotNu: number;
   aantalSpeelbeurtenTotNu: number;
